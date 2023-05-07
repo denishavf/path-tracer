@@ -1,25 +1,50 @@
 #include "../include/color.hpp"
 #include "../include/vec3.hpp"
+#include "../include/ray.hpp"
 
 #include <iostream>
 
-int main() {
-    const int image_width = 2560;
-    const int image_height = 2560;
+color<double> ray_color(const ray<double>& r) {
+    vec3<double> unit_direction = unit_vec(r.direction());
+    auto t = 0.5 * (unit_direction[1] + 1.0);
+    return (1.0 - t) * color<double>(1, 1, 1) + t * color<double>(.5, .7, 1);
+}
 
-    std::cout << 
-        "P3\n" 
-        << image_width << ' ' << image_height 
-        << "\n255\n";
+int main() {
+    const auto aspect_ratio = 16.0 / 9.0;
+    const int image_width = 400;
+    const int image_height = static_cast<int>(image_width / aspect_ratio);
+
+    // camera
+    auto viewport_height = 2.0;
+    auto viewport_width = aspect_ratio * viewport_height;
+    auto focal_length = 1.0;
+
+    point3<double> origin(0, 0, 0);
+    vec3<double> horizontal(viewport_width, 0, 0);
+    vec3<double> vertical(0, viewport_height, 0);
+    auto lower_left_corner = 
+                            origin 
+                            - horizontal/2.0 
+                            - vertical/2.0 
+                            - vec3<double>(0, 0, focal_length); 
+
+    // render
+    std::cout 
+              <<  "P3\n" 
+              << image_width << ' ' << image_height 
+              << "\n255\n";
 
     for (int j = image_height - 1; j >= 0; --j) {
         std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
         for (int i = 0; i != image_width; ++i) {
-            color<double> pixel_color(
-                    double(i) / (image_width - 1),
-                    double(j) / (image_height -1),
-                    0.25
+            auto u = double(i) / (image_width - 1);
+            auto v = double(j) / (image_height - 1);
+            ray<double> r(
+                    origin, 
+                    lower_left_corner + u*horizontal + v*vertical - origin
             );
+            color<double> pixel_color = ray_color(r);
             write_color(std::cout, pixel_color);
         }
     }

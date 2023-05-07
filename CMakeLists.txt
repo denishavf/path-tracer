@@ -14,6 +14,7 @@ set(SOURCES
 set(HEADERS
     include/vec3.hpp
     include/color.hpp    
+    include/ray.hpp
 )
 
 # Add executable target
