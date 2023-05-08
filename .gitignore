@@ -1,5 +1,5 @@
 #image outputs
-*.pmm
+*.ppm
 
 #CMake
 CMakeLists.txt.user
