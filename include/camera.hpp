@@ -15,6 +15,11 @@ class camera {
             origin = {0, 0, 0};
             horizontal = {viewport_width, 0.0, 0.0};
             vertical = {0.0, viewport_height, 0.0};
+            lower_left_corner = 
+                origin 
+                - horizontal/2.0 
+                - vertical/2.0
+                - vec3<double>(0, 0, focal_length);
         }
 
         ray<double> get_ray(double u, double v) const {

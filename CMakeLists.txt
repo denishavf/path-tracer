@@ -20,6 +20,7 @@ set(HEADERS
     include/hittable.hpp
     include/hittable-list.hpp
     include/sphere.hpp
+    include/camera.hpp
 )
 
 # Add executable target
