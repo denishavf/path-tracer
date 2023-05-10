@@ -1,5 +1,7 @@
 #pragma once
 
+#include "utils.hpp"
+
 #include <cmath>
 #include <iostream>
 
@@ -47,6 +49,23 @@ class vec3 {
 
         T len() const {
             return sqrt(len_squared());
+        }
+
+        inline static vec3 random() {
+            return {random_double(), random_double(), random_double()};
+        }
+
+        inline static vec3 random(double min, double max) {
+            return {
+                random_double(min, max),
+                random_double(min, max), 
+                random_double(min, max)
+            };
+        }
+
+        bool near_zero() const {
+            const auto s = 1e-8;
+            return (fabs(e[0]) < s) and (fabs(e[1]) < s) and (fabs(e[2]) < s);
         }
 
     private:
@@ -107,6 +126,24 @@ vec3<T> cross(const vec3<T> &u, const vec3<T> &v) {
 template <typename T>
 vec3<T> unit_vec(const vec3<T> &v) {
     return v / v.len(); 
+}
+
+inline vec3<double> random_in_unit_sphere() {
+    while (true) {
+        auto p = vec3<double>::random(-1, 1);
+        if (p.len_squared() >= 1)
+            continue;
+        return p;
+    }
+}
+
+inline vec3<double> random_unit_vector() {
+    return unit_vec(random_in_unit_sphere());
+}
+
+template <typename T>
+vec3<T>reflect(const vec3<T>& v, const vec3<T>& u) {
+    return v - 2 * dot(v, u) * u;
 }
 
 template <typename T>

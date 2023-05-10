@@ -2,12 +2,14 @@
 
 #include "hittable.hpp"
 #include "vec3.hpp"
+#include <memory>
 
 template <typename T>
 class sphere : public hittable<T> {
     public: 
         sphere() {}
-        sphere(point3<T>cen, T r) : center(cen), radius(r) {};
+        sphere(point3<T>cen, T r, shared_ptr<material<T>> m) 
+            : center(cen), radius(r), mat_ptr(m) {};
 
         virtual bool hit(
                 const ray<T>& r,
@@ -19,6 +21,7 @@ class sphere : public hittable<T> {
     private:
         point3<T> center;
         T radius;
+        shared_ptr<material<T>> mat_ptr;
 };
 
 template <typename T>
@@ -51,6 +54,7 @@ bool sphere<T>::hit(
     //#rec.p - r.at(rec.t);
     rec.p = r.at(rec.t);
     rec.set_face_normal(r, (rec.p - center) / radius);
+    rec.mat_ptr = mat_ptr;
 
     return true;
 }

@@ -1,11 +1,16 @@
 #pragma once
 
 #include "ray.hpp"
+#include "utils.hpp"
+
+template <typename T>
+class material;
 
 template <typename T>
 struct hit_record {
     point3<T> p;
     vec3<T> normal;
+    shared_ptr<material<T>> mat_ptr;
     T t;
     bool front_face;
 
