@@ -142,6 +142,15 @@ inline vec3<double> random_unit_vector() {
 }
 
 template <typename T>
+vec3<T> refract(const vec3<T>& uv, const vec3<T>& n, T etai_over_etat) {
+    auto cos_theta = fmin(dot(-uv, n), 1.0);
+    auto r_out_perp = etai_over_etat * (uv + cos_theta * n);
+    auto r_out_parallel = -sqrt(fabs(1.0 - r_out_perp.len_squared())) * n;
+
+    return r_out_perp + r_out_parallel;
+}
+
+template <typename T>
 vec3<T>reflect(const vec3<T>& v, const vec3<T>& u) {
     return v - 2 * dot(v, u) * u;
 }

@@ -1,5 +1,8 @@
-#image outputs
+# image outputs
 *.ppm
+
+# cache
+.cache/
 
 #CMake
 CMakeLists.txt.user
