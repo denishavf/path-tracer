@@ -47,7 +47,9 @@ int main() {
     const int max_depth = 50;
 
     // world
+    auto R = cos(pi / 4);
     hittable_list<double> world;
+
     
     auto material_ground = 
         make_shared<lambertian<double>>(color<double>(.8, .8, .0));
@@ -70,7 +72,13 @@ int main() {
                 point3<double>(1.0, .0, -1.0), .5, material_right));
 
     // camera
-    camera cam;
+    point3<double> lookfrom(3, 3, 2); 
+    point3<double> lookat(0, 0, -1);
+    vec3<double> vup(0, 1, 0);
+    auto dist_to_focus = (lookfrom - lookat).len();
+    auto aperture = 2.0; 
+
+    camera cam(lookfrom, lookat, vup, 20, aspect_ratio, aperture, dist_to_focus);
 
     // render
     std::cout 

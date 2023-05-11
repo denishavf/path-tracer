@@ -83,6 +83,16 @@ vec3<T> operator+(const vec3<T> &u, const vec3<T> &v) {
 }
 
 template <typename T>
+vec3<T> operator+(const vec3<T> &u, const T s) {
+    return vec3<T>(u[0] + s, u[1] + s, u[2] + s); 
+}
+
+template <typename T>
+vec3<T> operator-(const vec3<T> &u, const T s) {
+    return vec3<T>(u[0] - s, u[1] - s, u[2] - s); 
+}
+
+template <typename T>
 vec3<T> operator-(const vec3<T> &u, const vec3<T> &v) {
     return vec3<T>(u[0] - v[0], u[1] - v[1], u[2] - v[2]); 
 }
@@ -133,6 +143,16 @@ inline vec3<double> random_in_unit_sphere() {
         auto p = vec3<double>::random(-1, 1);
         if (p.len_squared() >= 1)
             continue;
+        return p;
+    }
+}
+
+inline vec3<double> random_in_unit_disk() {
+    while (true) {
+        auto p = vec3<double>(random_double(-1,1), random_double(-1, 1), 0);
+        if (p.len_squared() >= 1)
+            continue;
+
         return p;
     }
 }
